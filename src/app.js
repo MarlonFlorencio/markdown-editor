@@ -4,11 +4,22 @@ import React, { Component } from 'react'
 import marked from 'marked'
 import MarkdownEditor from './markdown-editor'
 
+import('highlight.js').then((hljs) => {
+  marked.setOptions({
+    highlight: (code, lang) => {
+      if (lang && hljs.getLanguage(lang)) {
+        return hljs.highlight(lang, code).value
+      }
+      return hljs.highlightAuto(code).value
+    }
+  })
+})
+
 class App extends Component {
   constructor () {
     super()
     this.state = {
-      value: 'Opaqq'
+      value: ''
     }
 
     this.handleChange = (e) => {
