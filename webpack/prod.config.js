@@ -47,7 +47,7 @@ module.exports = {
     }),
 
     new HtmlPlugin(Object.assign({}, common.htmlPluginConfig, {
-      minify: { collapseWhitespace: true },
+     minify: { collapseWhitespace: true },
 
       chunksSortMode: (chunk1, chunk2) => {
         const order = ['react-build', 'vendor', 'main']
