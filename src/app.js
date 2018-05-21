@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import marked from 'marked'
-import MarkdownEditor from './markdown-editor'
+import MarkdownEditor from 'components/markdown-editor'
 
 import('highlight.js').then((hljs) => {
   marked.setOptions({
@@ -19,13 +19,28 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
-      value: ''
+      value: '',
+      isSaving: false
     }
 
     this.handleChange = (e) => {
       this.setState({
-        value: e.target.value
+        value: e.target.value,
+        isSaving: true
       })
+    }
+
+    this.handleSave = () => {
+      localStorage.setItem('md', this.state.value)
+      this.setState({ isSaving: false })
+    }
+
+    this.handleRemove = () => {
+      console.log('ss')
+    }
+
+    this.handleCreate = () => {
+      console.log('ss')
     }
 
     this.getMarkup = () => {
@@ -33,9 +48,30 @@ class App extends Component {
     }
   }
 
+  componentDidMount () {
+    this.setState({
+      value: localStorage.getItem('md')
+    })
+  }
+
+  componentDidUpdate () {
+    clearInterval(this.timer)
+    this.timer = setTimeout(this.handleSave, 1000)
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.timer)
+  }
+
   render () {
     return (
-      <MarkdownEditor value={this.state.value} handleChange={this.handleChange} getMarkup={this.getMarkup} />
+      <MarkdownEditor
+        value={this.state.value}
+        isSaving={this.state.isSaving}
+        handleRemove={this.handleRemove}
+        handleCreate={this.handleCreate}
+        handleChange={this.handleChange}
+        getMarkup={this.getMarkup} />
     )
   }
 }

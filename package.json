@@ -1,15 +1,16 @@
 {
   "scripts": {
-    "start": "node server.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "webpack-dashboard -- node server.js",
     "test": "jest --coverage",
-    "test:watch": "yarn test --watch",
+    "test:watch": "yarn test -- --watch",
     "lint": "standard --parser babel-eslint --verbose | snazzy",
     "lint:watch": "gulp",
     "lint:fix": "standard --fix",
-    "build": "cross-env NODE_ENV=production webpack --progress --config webpack/prod.config -p",
+    "build": "cross-env NODE_ENV=production BABEL_ENV=production webpack --progress --config webpack/prod.config -p",
     "build:analyzer": "cross-env ANALYZER=true yarn build",
-    "storybook": "start-storybook -p 9001 -c storybook",
-    "build-storybook": "cross-env NODE_ENV=production build-storybook -c storybook"
+    "storybook": "start-storybook -p 6006 -c storybook",
+    "build-storybook": "cross-env NODE_ENV=production BABEL_ENV=production build-storybook -c storybook"
   },
   "author": "",
   "license": "ISC",
@@ -55,14 +56,14 @@
     "preact-compat": "^3.18.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "strclass": "^2.0.9",
     "webpack-bundle-analyzer": "^2.12.0"
   },
   "standard": {
     "globals": [
-      "alert",
-      "test",
+      "localStorage",
       "it",
-      "describe"
+      "expect"
     ]
   }
 }
