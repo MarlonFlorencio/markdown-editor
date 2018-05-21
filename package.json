@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
-    "dev": "webpack-dashboard -- node server.js",
+    "dev": "node server.js",
     "test": "jest --coverage",
     "test:watch": "yarn test -- --watch",
     "lint": "standard --parser babel-eslint --verbose | snazzy",
@@ -57,7 +57,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "strclass": "^2.0.9",
-    "webpack-bundle-analyzer": "^2.12.0"
+    "webpack-bundle-analyzer": "^2.13.0"
   },
   "standard": {
     "globals": [

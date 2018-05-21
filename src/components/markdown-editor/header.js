@@ -19,7 +19,6 @@ const MarkdownEditorHeader = ({isSaving, handleCreate, handleRemove}) => (
 )
 
 MarkdownEditorHeader.propTypes = {
-  title: PropTypes.string,
   handleRemove: PropTypes.func.isRequired,
   handleCreate: PropTypes.func.isRequired
 }

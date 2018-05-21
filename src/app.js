@@ -31,16 +31,19 @@ class App extends Component {
     }
 
     this.handleSave = () => {
-      localStorage.setItem('md', this.state.value)
-      this.setState({ isSaving: false })
+      if (this.state.isSaving) {
+        localStorage.setItem('md', this.state.value)
+        this.setState({ value: '' })
+      }
     }
 
     this.handleRemove = () => {
-      console.log('ss')
+      localStorage.removeItem('md')
+      this.setState({ isSaving: false })
     }
 
     this.handleCreate = () => {
-      console.log('ss')
+      console.log('create')
     }
 
     this.getMarkup = () => {
@@ -50,7 +53,7 @@ class App extends Component {
 
   componentDidMount () {
     this.setState({
-      value: localStorage.getItem('md')
+      value: localStorage.getItem('md') || ''
     })
   }
 
