@@ -72,7 +72,11 @@ module.exports = {
         name: 'media/[name].[hash:8].[ext]'
       }
     }
-},
+  },
+
+  module: {
+    noParse: /\.min\.js$/
+  },
 
   resolve: {
     alias: {
@@ -82,5 +86,4 @@ module.exports = {
       components: join(paths.src, 'components')
     }
   }
-
 }
