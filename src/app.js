@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import marked from 'marked'
-import MarkdownEditor from 'components/markdown-editor'
+import MarkdownEditor from 'views/markdown-editor'
 
 import('highlight.js').then((hljs) => {
   marked.setOptions({
@@ -20,7 +20,7 @@ class App extends Component {
     super()
     this.state = {
       value: '',
-      isSaving: false
+      isSaving: null
     }
 
     this.handleChange = (e) => {
@@ -33,27 +33,33 @@ class App extends Component {
     this.handleSave = () => {
       if (this.state.isSaving) {
         localStorage.setItem('md', this.state.value)
-        this.setState({ value: '' })
+        this.setState({ isSaving: false })
       }
     }
 
     this.handleRemove = () => {
       localStorage.removeItem('md')
-      this.setState({ isSaving: false })
+      this.setState({ value: '' })
     }
 
     this.handleCreate = () => {
-      console.log('create')
+      this.setState({ value: '' })
+      this.textarea.focus()
     }
 
     this.getMarkup = () => {
       return {__html: marked(this.state.value)}
     }
+
+    this.textareaRef = (node) => {
+      this.textarea = node
+    }
   }
 
   componentDidMount () {
+    let valor = localStorage.getItem('md') || ''
     this.setState({
-      value: localStorage.getItem('md') || ''
+      value: valor
     })
   }
 
@@ -74,7 +80,8 @@ class App extends Component {
         handleRemove={this.handleRemove}
         handleCreate={this.handleCreate}
         handleChange={this.handleChange}
-        getMarkup={this.getMarkup} />
+        getMarkup={this.getMarkup}
+        textareaRef={this.textareaRef} />
     )
   }
 }
