@@ -1,6 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
+import { v4 } from 'node-uuid'
 import marked from 'marked'
 import MarkdownEditor from 'views/markdown-editor'
 
@@ -18,9 +19,21 @@ import('highlight.js').then((hljs) => {
 class App extends Component {
   constructor () {
     super()
-    this.state = {
+
+    this.clearState = () => ({
       value: '',
-      isSaving: null
+      id: v4()
+    })
+
+    this.state = {
+      ...this.clearState(),
+      isSaving: null,
+      files: {}
+    }
+
+    this.createNew = () => {
+      this.setState(this.clearState())
+      this.textarea.focus()
     }
 
     this.handleChange = (e) => {
@@ -32,19 +45,18 @@ class App extends Component {
 
     this.handleSave = () => {
       if (this.state.isSaving) {
-        localStorage.setItem('md', this.state.value)
+        localStorage.setItem(this.state.id, this.state.value)
         this.setState({ isSaving: false })
       }
     }
 
     this.handleRemove = () => {
-      localStorage.removeItem('md')
-      this.setState({ value: '' })
+      localStorage.removeItem(this.state.id)
+      this.createNew()
     }
 
     this.handleCreate = () => {
-      this.setState({ value: '' })
-      this.textarea.focus()
+      this.createNew()
     }
 
     this.getMarkup = () => {
@@ -54,12 +66,22 @@ class App extends Component {
     this.textareaRef = (node) => {
       this.textarea = node
     }
+
+    this.handleOpenFile = (fileId) => () => {
+      this.setState({
+        value: this.state.files[fileId],
+        id: fileId
+      })
+    }
   }
 
   componentDidMount () {
-    let valor = localStorage.getItem('md') || ''
+    const files = Object.keys(localStorage)
     this.setState({
-      value: valor
+      files: files.reduce((acc, fileId) => ({
+        ...acc,
+        [fileId]: localStorage.getItem(fileId)
+      }), {})
     })
   }
 
@@ -81,7 +103,9 @@ class App extends Component {
         handleCreate={this.handleCreate}
         handleChange={this.handleChange}
         getMarkup={this.getMarkup}
-        textareaRef={this.textareaRef} />
+        textareaRef={this.textareaRef}
+        files={this.state.files}
+        handleOpenFile={this.handleOpenFile} />
     )
   }
 }
