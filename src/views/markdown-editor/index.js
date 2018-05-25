@@ -6,11 +6,12 @@ import Header from './header'
 import Files from './files'
 
 const MarkdownEditor = ({value, handleChange, getMarkup, textareaRef, files, handleOpenFile,
-                          isSaving, handleRemove, handleCreate}) => (
+                          isSaving, handleRemove, handleCreate, title}) => (
   <section className='editor'>
-    <Header isSaving={isSaving} handleRemove={handleRemove} handleCreate={handleCreate} />
+    <Header isSaving={isSaving} handleRemove={handleRemove}
+      handleCreate={handleCreate} title={title} handleChange={handleChange} />
     <Files files={files} handleOpenFile={handleOpenFile} />
-    <textarea value={value} onChange={handleChange} autoFocus ref={textareaRef} />
+    <textarea value={value} onChange={handleChange('value')} autoFocus ref={textareaRef} />
     <article className='view' dangerouslySetInnerHTML={getMarkup()} />
   </section>
 )
