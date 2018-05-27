@@ -12,7 +12,7 @@ const paths = {
 
 module.exports = {
   paths,
-  
+
   entry: {
     main: join(paths.src, 'index')
   },
@@ -42,7 +42,21 @@ module.exports = {
   jsLoader: {
     test: /\.js$/,
     include: paths.src,
-    use: 'babel-loader'
+    use: {
+      loader: 'babel-loader',
+      options: {
+        babelrc: false,
+        presets: [['env', { modules: false }], 'stage-0', 'react'],
+        plugins: [
+          'react-hot-loader/babel',
+          ['transform-runtime', {
+            helpers: false,
+            polyfill: false,
+            regenerator: true
+          }]
+        ]
+      }
+    }
   },
 
   cssLoader: {
